@@ -12,10 +12,6 @@ spring:
     format:
       date: yyyy-MM-dd
       date-time: yyyy-MM-dd HH:mm:ss
-  security:
-    user:
-      name: admin
-      password: admin
 
 mybatis-plus:
   configuration:

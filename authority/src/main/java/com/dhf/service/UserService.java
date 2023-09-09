@@ -9,5 +9,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-09-09 10:55:29
 */
 public interface UserService extends IService<User> {
+    /**
+     * 根据用户名查询用户信息
+     * @param userName 用户名
+     * @return
+     */
+    User findUserByUserName(String userName);
 
 }
