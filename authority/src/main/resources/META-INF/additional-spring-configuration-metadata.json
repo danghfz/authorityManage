@@ -1,0 +1,15 @@
+{
+  "properties": [
+    {
+      "name": "dhf.jwt.secret",
+      "type": "java.lang.String",
+      "description": "Description for dhf.jwt.secret.",
+      "defaultValue": "secret"
+    },
+    {
+      "name": "dhf.jwt.expiration",
+      "type": "java.lang.Long",
+      "description": "Description for dhf.jwt.expiration.",
+      "defaultValue": "1800000"
+    }
+  ] }

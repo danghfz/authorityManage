@@ -5,3 +5,8 @@ spring:
     url: ${dev-mysql-url}
     username: ${dev-mysql-username}
     password: ${dev-mysql-password}
+
+dhf:
+  jwt:
+    secret: ${dev-jwt-secret}
+    expiration: ${dev-jwt-expiration}
