@@ -1,4 +1,4 @@
-package com.dhf.config;
+package com.dhf.config.web;
 
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

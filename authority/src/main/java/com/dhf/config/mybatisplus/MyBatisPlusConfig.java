@@ -1,4 +1,4 @@
-package com.dhf.config;
+package com.dhf.config.mybatisplus;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
