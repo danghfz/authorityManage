@@ -49,7 +49,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         }
         //将错误信息转换成JSON
         String result =
-                JSON.toJSONString(ResApi.error().setCode(ResCode.ERROR).setMsg(message));
+                JSON.toJSONString(ResApi.error().setCode(ResCode.ERROR.code()).setMsg(message));
         outputStream.write(result.getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         outputStream.close();

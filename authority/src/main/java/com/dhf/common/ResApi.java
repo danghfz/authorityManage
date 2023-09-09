@@ -5,6 +5,11 @@ import lombok.experimental.Accessors;
 
 import java.util.HashMap;
 
+import static com.dhf.common.ResCode.SUCCESS;
+import static com.dhf.common.ResCode.ERROR;
+import static com.dhf.common.ResCode.NO_AUTH;
+import static com.dhf.common.ResCode.NO_LOGIN;
+
 /**
  * @author danghf
  * @version 1.0
@@ -15,7 +20,7 @@ import java.util.HashMap;
 @Accessors(chain = true)
 public class ResApi {
     private boolean isSuccess;
-    private ResCode code;
+    private int code;
     private String msg;
     private HashMap<String,Object> data;
     ResApi(){
@@ -24,8 +29,8 @@ public class ResApi {
     public static ResApi success(){
         ResApi resApi = new ResApi();
         resApi.setSuccess(true);
-        resApi.setCode(ResCode.SUCCESS);
-        resApi.setMsg(ResCode.SUCCESS.getMsg());
+        resApi.setCode(SUCCESS.code());
+        resApi.setMsg(SUCCESS.getMsg());
         return resApi;
     }
     public static ResApi success(HashMap<String,Object> map){
@@ -41,8 +46,8 @@ public class ResApi {
     public static ResApi error(){
         ResApi resApi = new ResApi();
         resApi.setSuccess(false);
-        resApi.setCode(ResCode.ERROR);
-        resApi.setMsg(ResCode.ERROR.getMsg());
+        resApi.setCode(ERROR.code());
+        resApi.setMsg(ERROR.getMsg());
         return resApi;
     }
     public static ResApi error(HashMap<String,Object> map){

@@ -31,7 +31,7 @@ public class CustomerAccessDeniedHandler implements AccessDeniedHandler {
         //转换成json字符串
         String result = JSON.toJSONString(
                 ResApi.error()
-                        .setCode(ResCode.NO_AUTH)
+                        .setCode(ResCode.NO_AUTH.code())
                         .setMsg("无权限访问,请联系管理员！")
         );
         outputStream.write(result.getBytes(StandardCharsets.UTF_8));

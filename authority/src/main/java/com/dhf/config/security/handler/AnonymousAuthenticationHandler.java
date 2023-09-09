@@ -31,7 +31,7 @@ public class AnonymousAuthenticationHandler implements AuthenticationEntryPoint 
         // 转换成json字符串
         String res = JSON.toJSONString(
                 ResApi.error()
-                        .setCode(ResCode.NO_AUTH)
+                        .setCode(ResCode.NO_AUTH.code())
                         .setMsg("无权限访问,请联系管理员！")
         );
         outputStream.write(res.getBytes(StandardCharsets.UTF_8));
