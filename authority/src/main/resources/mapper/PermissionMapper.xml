@@ -29,4 +29,17 @@
         icon,create_time,update_time,
         remark,order_num,is_delete
     </sql>
+    <select id="selectPermissionListByUserId" resultType="com.dhf.domain.Permission">
+        SELECT DISTINCT
+            permission.*
+        FROM
+            sys_user user
+                LEFT JOIN sys_user_role user_role ON user.id = user_role.user_id
+                LEFT JOIN sys_role_permission role_permission ON role_permission.role_Id = user_role.role_id
+                LEFT JOIN sys_permission permission ON permission.id IN (role_permission.permission_Id)
+        WHERE
+            user_id = #{userId}
+        ORDER BY
+            permission.id;
+    </select>
 </mapper>
