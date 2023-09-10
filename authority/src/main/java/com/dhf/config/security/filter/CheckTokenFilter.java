@@ -89,7 +89,7 @@ public class CheckTokenFilter extends OncePerRequestFilter {
         String redisToken = redisService.get(tokenKey);
         //如果token和Redis中的token不一致，则验证失败
         if (!token.equals(redisToken)) {
-            throw new CustomerAuthenticationException("token验证失败");
+            throw new CustomerAuthenticationException("token过期");
         }
         //如果存在token，则从token中解析出用户名
         String username = jwtUtils.getUsernameFromToken(token);
