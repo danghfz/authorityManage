@@ -5,8 +5,21 @@ spring:
     url: ${dev-mysql-url}
     username: ${dev-mysql-username}
     password: ${dev-mysql-password}
+  redis:
+    host: ${dev-redis-host}
+    port: ${dev-redis-port}
+#    password: ${dev-redis-password}
+    database: ${dev-redis-database}
+    connect-timeout: ${dev-redis-connect-timeout}
+    # 自定义属性, 过期时间
+    expire: ${dev-redis-expire}
 
 dhf:
   jwt:
     secret: ${dev-jwt-secret}
     expiration: ${dev-jwt-expiration}
+
+#登录请求地址(自定义)
+request:
+  login:
+    url: ${dev-request-login-url}

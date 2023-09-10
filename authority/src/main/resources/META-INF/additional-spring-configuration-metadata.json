@@ -11,5 +11,16 @@
       "type": "java.lang.Long",
       "description": "Description for dhf.jwt.expiration.",
       "defaultValue": "1800000"
+    },
+    {
+      "name": "spring.redis.expire",
+      "type": "java.lang.String",
+      "description": "Description for spring.redis.expire.",
+      "defaultValue": "60000"
+    },
+    {
+      "name": "request.login.url",
+      "type": "java.lang.String",
+      "description": "Description for request.login.url."
     }
   ] }

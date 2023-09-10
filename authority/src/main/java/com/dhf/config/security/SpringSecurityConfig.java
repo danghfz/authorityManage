@@ -1,5 +1,6 @@
 package com.dhf.config.security;
 
+import com.dhf.config.security.filter.CheckTokenFilter;
 import com.dhf.config.security.handler.AnonymousAuthenticationHandler;
 import com.dhf.config.security.handler.CustomerAccessDeniedHandler;
 import com.dhf.config.security.handler.LoginFailureHandler;
@@ -8,12 +9,14 @@ import com.dhf.config.security.service.CustomerUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author danghf
@@ -28,18 +31,21 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomerAccessDeniedHandler customerAccessDeniedHandler;
     private final AnonymousAuthenticationHandler anonymousAuthenticationHandler;
     private final CustomerUserDetailsServiceImpl customerUserDetailsService;
+    private final CheckTokenFilter checkTokenFilter;
 
     @Autowired
     SpringSecurityConfig(LoginSuccessHandler loginSuccessHandler,
                          LoginFailureHandler loginFailureHandler,
                          CustomerAccessDeniedHandler customerAccessDeniedHandler,
                          AnonymousAuthenticationHandler anonymousAuthenticationHandler,
-                         CustomerUserDetailsServiceImpl customerUserDetailsService) {
+                         CustomerUserDetailsServiceImpl customerUserDetailsService,
+                         CheckTokenFilter checkTokenFilter) {
         this.loginSuccessHandler = loginSuccessHandler;
         this.loginFailureHandler = loginFailureHandler;
         this.customerAccessDeniedHandler = customerAccessDeniedHandler;
         this.anonymousAuthenticationHandler = anonymousAuthenticationHandler;
         this.customerUserDetailsService = customerUserDetailsService;
+        this.checkTokenFilter = checkTokenFilter;
     }
 
 
@@ -51,6 +57,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // 登录前过滤验证
+        http.addFilterBefore(checkTokenFilter, UsernamePasswordAuthenticationFilter.class);
         // 登录过程处理
         http.formLogin()
                 // 登录请求url

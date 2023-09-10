@@ -4,6 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.dhf.common.JwtUtils;
 import com.dhf.common.LoginResult;
 import com.dhf.common.ResCode;
+import com.dhf.config.redis.service.RedisService;
 import com.dhf.domain.User;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,12 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtUtils jwtUtils;
-
+    private final RedisService redisService;
     @Autowired
-    public LoginSuccessHandler(JwtUtils jwtUtils) {
+    public LoginSuccessHandler(JwtUtils jwtUtils,
+                               RedisService redisService){
         this.jwtUtils = jwtUtils;
+        this.redisService = redisService;
     }
 
     @Override
@@ -57,6 +60,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         outputStream.write(result.getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         outputStream.close();
+        // 将 token 存入 Redis
+        redisService.set("token_"+token,token,jwtUtils.getExpiration() / 1000);
     }
 
 }

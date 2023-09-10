@@ -3,6 +3,7 @@ package com.dhf.config.security.handler;
 import com.alibaba.fastjson2.JSON;
 import com.dhf.common.ResApi;
 import com.dhf.common.ResCode;
+import com.dhf.config.security.exception.CustomerAuthenticationException;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -31,6 +32,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         ServletOutputStream outputStream = response.getOutputStream();
         // 提示信息
         String message = null;
+        int code = ResCode.ERROR.code();
         //判断异常类型
         if(exception instanceof AccountExpiredException){
             message = "账户过期,登录失败！";
@@ -44,12 +46,15 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
             message = "账户被锁,登录失败！";
         }else if(exception instanceof InternalAuthenticationServiceException){
             message = "账户不存在,登录失败！";
+        }else if(exception instanceof CustomerAuthenticationException){
+            message = exception.getMessage();
+            code = ResCode.NO_LOGIN.code();
         }else{
             message = "登录失败！";
         }
         //将错误信息转换成JSON
         String result =
-                JSON.toJSONString(ResApi.error().setCode(ResCode.ERROR.code()).setMsg(message));
+                JSON.toJSONString(ResApi.error().setCode(code).setMsg(message));
         outputStream.write(result.getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         outputStream.close();
