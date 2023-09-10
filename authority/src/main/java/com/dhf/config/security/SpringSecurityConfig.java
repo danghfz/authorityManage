@@ -7,6 +7,7 @@ import com.dhf.config.security.handler.LoginFailureHandler;
 import com.dhf.config.security.handler.LoginSuccessHandler;
 import com.dhf.config.security.service.CustomerUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,8 +48,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         this.customerUserDetailsService = customerUserDetailsService;
         this.checkTokenFilter = checkTokenFilter;
     }
-
-
+    @Value("${request.login.url}")
+    private String loginUrl;
     /**
      * 处理登录认证
      *
@@ -62,7 +63,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         // 登录过程处理
         http.formLogin()
                 // 登录请求url
-                .loginProcessingUrl("/user/login")
+                .loginProcessingUrl(loginUrl)
                 .successHandler(loginSuccessHandler)
                 .failureHandler(loginFailureHandler)
                 .and()
@@ -74,7 +75,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 设置需要拦截的请求
                 .authorizeRequests()
                 // 放行登录请求，不拦截
-                .antMatchers("/user/login").permitAll()
+                .antMatchers(loginUrl).permitAll()
                 // 其他拦截
                 .anyRequest().authenticated()
                 .and()
