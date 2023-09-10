@@ -36,6 +36,12 @@ public class JwtUtils {
     private Long expiration;
 
     /**
+     * redis key 前缀
+     */
+    @Value("${dhf.jwt.redisPrefix}")
+    private String redisPrefix;
+
+    /**
      * 数据声明生成token令牌
      *
      * @param claims 数据声明

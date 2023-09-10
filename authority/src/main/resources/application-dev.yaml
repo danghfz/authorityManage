@@ -18,6 +18,7 @@ dhf:
   jwt:
     secret: ${dev-jwt-secret}
     expiration: ${dev-jwt-expiration}
+    redisPrefix: ${dev-jwt-redis-prefix}
 
 #登录请求地址(自定义)
 request:

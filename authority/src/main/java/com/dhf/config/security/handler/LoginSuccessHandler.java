@@ -61,7 +61,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         outputStream.flush();
         outputStream.close();
         // 将 token 存入 Redis
-        redisService.set("token_"+token,token,jwtUtils.getExpiration() / 1000);
+        redisService.set(jwtUtils.getRedisPrefix()+token,token,jwtUtils.getExpiration() / 1000);
     }
 
 }

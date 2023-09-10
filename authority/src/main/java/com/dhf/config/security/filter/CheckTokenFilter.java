@@ -85,7 +85,7 @@ public class CheckTokenFilter extends OncePerRequestFilter {
         }
         // 验证token是否有效
         // 自己设置 tokenKey, 根据存储自己的tokenKey
-        String tokenKey = "token_" + token;
+        String tokenKey = jwtUtils.getRedisPrefix() + token;
         String redisToken = redisService.get(tokenKey);
         //如果token和Redis中的token不一致，则验证失败
         if (!token.equals(redisToken)) {
