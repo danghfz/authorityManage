@@ -2,11 +2,13 @@ package com.dhf.controller.sys;
 
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.dhf.common.JwtUtils;
+import com.dhf.common.MenuTree;
 import com.dhf.common.ResApi;
 import com.dhf.config.redis.service.RedisService;
 import com.dhf.domain.Permission;
 import com.dhf.domain.User;
 import com.dhf.entity.UserInfo;
+import com.dhf.vo.RouterVo;
 import com.dhf.vo.TokenVo;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author danghf
@@ -84,10 +87,11 @@ public class SysUserController {
 
     /**
      * 获取用户信息
+     *
      * @return ResApi
      */
     @GetMapping("/info")
-    public ResApi getInfo(){
+    public ResApi getInfo() {
         // 从 security 上下文中获取当前用户信息
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
@@ -107,6 +111,25 @@ public class SysUserController {
         UserInfo userInfo = new UserInfo(user.getId(), user.getUsername(), user.getAvatar(), null, permissions);
 
         return ResApi.success("userInfo", userInfo).setMsg("获取用户信息成功");
+    }
+
+    @GetMapping("/getMenuList")
+    public ResApi getMenuList() {
+        // 从 springSecurity 获取用户信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (Objects.isNull(authentication)) {
+            return ResApi.error().setMsg("获取用户信息失败");
+        }
+        User user = (User) authentication.getPrincipal();
+        // 获取权限
+        List<Permission> permissionList = user.getPermissionList();
+        // 筛选目录和菜单 权限类型(0-目录 1-菜单 2-按钮)
+        List<Permission> permissions = permissionList.stream()
+                .filter(item -> item != null && item.getType() != 2)
+                .collect(Collectors.toList());
+        // 生成路由
+        List<RouterVo> routerVos = MenuTree.makeRouter(permissions, 0L);
+        return ResApi.success("routerVos", routerVos);
     }
 
 }
