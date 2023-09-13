@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -111,6 +113,31 @@ public class SysUserController {
         UserInfo userInfo = new UserInfo(user.getId(), user.getUsername(), user.getAvatar(), null, permissions);
 
         return ResApi.success("userInfo", userInfo).setMsg("获取用户信息成功");
+    }
+
+    /**
+     * 退出登录
+     *
+     * @param request  req
+     * @param response resp
+     * @return ResApi
+     */
+    @PostMapping("/logout")
+    public ResApi logout(HttpServletRequest request, HttpServletResponse response) {
+        // 获取token
+        String token = request.getParameter("token");
+        if (ObjectUtils.isEmpty(token)) {
+            token = request.getHeader("token");
+        }
+        // 获取用户信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            // 清空用户信息
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+            // 清空 redis信息
+            redisService.del(jwtUtils.getRedisPrefix() + token);
+        }
+        return ResApi.success().setMsg("退出成功");
     }
 
     @GetMapping("/getMenuList")
