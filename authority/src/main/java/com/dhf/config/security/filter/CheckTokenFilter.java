@@ -55,6 +55,8 @@ public class CheckTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 获取当前请求地址
         String uri = request.getRequestURI();
+        // 添加响应头，解决跨域
+        response.setHeader("Access-Control-Allow-Origin", "*");
         // 如果当前请求地址是登录请求地址，则直接放行
         if (!loginUrl.equals(uri)) {
             try {

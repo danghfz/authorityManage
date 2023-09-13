@@ -1,5 +1,6 @@
 package com.dhf.config.web;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @date 2023/09/09 11:53
  * 跨域配置
  */
+@Configuration
 public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -19,8 +21,9 @@ public class CorsConfig implements WebMvcConfigurer {
          * 允许所有请求来源
          */
         registry.addMapping("/**")
-                .allowedHeaders("/**")
-                .allowedMethods("/**")
-                .allowedOrigins("/**");
+                .allowedHeaders("*")
+                .allowedMethods("*")
+                .allowedOrigins("*");
+        //.allowCredentials(true);
     }
 }
