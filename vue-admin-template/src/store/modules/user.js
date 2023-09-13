@@ -53,9 +53,14 @@ const actions = {
         if (!data) {
           return reject('Verification failed, please Login again.')
         }
-
-        const { name, avatar } = data
-        console.log('data', data)
+        // data: {
+        //   userInfo: {
+        //     'id': ''
+        //     'name': ...
+        //
+        //   }
+        // }
+        const { name, avatar } = data.userInfo
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         resolve(data)
