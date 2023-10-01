@@ -70,8 +70,8 @@ public class JwtUtils {
                     Jwts.parser()
                             .setSigningKey(secret)
                             .parseClaimsJws(token).getBody();
-        } catch (Exception e) {
-            claims = null;
+        } catch (ExpiredJwtException e) {
+            claims = e.getClaims();
         }
         return claims;
     }
